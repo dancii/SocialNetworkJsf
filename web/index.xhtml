@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        Hello from Facelets
+        <br />
+        <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
+        
+        <h:form>
+            <h:inputText id="test" value="#{userBean.username}"/>
+            <h:inputText id="test2" value="#{userBean.password}"/>
+            <h:inputText id="test3" value="#{userBean.firstname}"/>
+            <h:inputText id="test4" value="#{userBean.lastname}"/>
+            <h:inputText id="test5" value="#{userBean.email}"/>
+            <h:commandButton id="testBtn" value="Next" action="#{userBean.registerUser()}"/>
+        </h:form>
+    </h:body>
+</html>
+
