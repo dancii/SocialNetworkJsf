@@ -3,20 +3,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Login - Social network</title>
     </h:head>
     <h:body>
-        Hello from Facelets
+        <h1>Login</h1>
         <br />
         <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
         
         <h:form>
-            <h:inputText id="test" value="#{userBean.username}"/>
-            <h:inputText id="test2" value="#{userBean.password}"/>
-            <h:inputText id="test3" value="#{userBean.firstname}"/>
-            <h:inputText id="test4" value="#{userBean.lastname}"/>
-            <h:inputText id="test5" value="#{userBean.email}"/>
-            <h:commandButton id="testBtn" value="Next" action="#{userBean.registerUser()}"/>
+            Username: <h:inputText id="test" value="#{userBean.username}"/><br/>
+            Password: <h:inputSecret id="test2" value="#{userBean.password}"/><br/>
+            <h:commandButton id="testBtn" value="Next" action="#{userBean.loginUser()}"/>
         </h:form>
     </h:body>
 </html>

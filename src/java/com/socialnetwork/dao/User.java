@@ -6,6 +6,7 @@
 package com.socialnetwork.dao;
 
 import com.socialnetwork.bean.UserBean;
+import com.socialnetwork.model.UserModel;
 import com.socialnetwork.util.HibernateUtil;
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -18,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -123,13 +125,10 @@ public class User implements Serializable {
         this.email = email;
     }
     
-    public void registerUser(UserBean user){
-        User userDao = new User();
-        userDao.username=user.getUsername();
-        userDao.password=user.getPassword();
-        userDao.firstname=user.getFirstname();
-        userDao.lastname=user.getLastname();
-        userDao.email=user.getEmail();
+    public Boolean registerUser(UserBean user){
+        Boolean registerSuccess=false;
+        User userDao = null;
+        userDao=returnUser(user);
         
         Transaction trans=null;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -137,6 +136,7 @@ public class User implements Serializable {
             trans=session.beginTransaction();
             session.save(userDao);
             session.getTransaction().commit();
+            registerSuccess=true;
         }catch(Exception e){
             if(trans!=null){
                 trans.rollback();
@@ -146,6 +146,47 @@ public class User implements Serializable {
             session.flush();
             session.close();
         }
+        return registerSuccess;
+    }
+    
+    public UserModel loginUser(UserBean user){
+        User userDao = null;
+        UserModel userModel=null;
+        
+        Transaction trans=null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            Query query= session.createQuery("from User where username = :username and password = :password");
+            query.setParameter("username", user.getUsername());
+            query.setParameter("password", user.getPassword());
+            userDao = (User) query.uniqueResult();
+            if(userDao!=null){
+                userModel = new UserModel();
+                userModel.setUsername(userDao.getUsername());
+                userModel.setFirstname(userDao.getFirstname());
+                userModel.setLastname(userDao.getLastname());
+                userModel.setEmail(userDao.getEmail());
+            }
+        }catch(Exception e){
+            if(trans!=null){
+                trans.rollback();
+            }
+            e.printStackTrace();
+        }finally{
+            session.flush();
+            session.close();
+        }
+        return userModel;
+    }
+    
+    public User returnUser(UserBean user){
+        User userDao = new User();
+        userDao.username=user.getUsername();
+        userDao.password=user.getPassword();
+        userDao.firstname=user.getFirstname();
+        userDao.lastname=user.getLastname();
+        userDao.email=user.getEmail();
+        return userDao;
     }
 
     @Override

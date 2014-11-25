@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Register - Social network</title>
+    </h:head>
+    <h:body>
+        Register
+        <br />
+        <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
+        
+        <h:form>
+            Username: <h:inputText id="test" value="#{userBean.username}"/><br/>
+            password <h:inputSecret id="test2" value="#{userBean.password}"/><br/>
+            Firstname: <h:inputText id="test3" value="#{userBean.firstname}"/><br/>
+            Lastname: <h:inputText id="test4" value="#{userBean.lastname}"/><br/>
+            Email: <h:inputText id="test5" value="#{userBean.email}"/><br/>
+            <h:commandButton id="testBtn" value="Next" action="#{userBean.registerUser()}"/>
+        </h:form>
+    </h:body>
+</html>

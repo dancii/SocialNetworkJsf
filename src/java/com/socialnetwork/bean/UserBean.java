@@ -3,8 +3,9 @@ package com.socialnetwork.bean;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import com.socialnetwork.dao.User;
+import com.socialnetwork.model.UserModel;
 
-@ManagedBean
+@ManagedBean(eager = true)
 @SessionScoped
 public class UserBean {
 
@@ -13,6 +14,7 @@ public class UserBean {
     private String firstname;
     private String lastname;
     private String email;
+    private UserModel userModel=null;
     
     public UserBean() {
     }
@@ -56,11 +58,38 @@ public class UserBean {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public UserModel getUserModel() {
+        return userModel;
+    }
+
+    public void setUserModel(UserModel userModel) {
+        this.userModel = userModel;
+    }
+    
+    
     
     public String registerUser(){
+        Boolean registerSuccess=false;
         User user=new User();
         user.registerUser(this);
-        return "testPage";
+        if(registerSuccess){
+            return "index";
+        }else{
+            return "register";
+        }
+        
+    }
+    
+    public String loginUser(){
+        
+        User user=new User();
+        userModel=user.loginUser(this);
+        if(userModel!=null){
+            return "welcome";
+        }else{
+            return "index";
+        }
     }
     
 }
