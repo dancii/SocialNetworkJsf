@@ -16,8 +16,7 @@ public class UserBean {
     private String email;
     private UserModel userModel=null;
     
-    public UserBean() {
-    }
+    public UserBean() {}
 
     public String getUsername() {
         return username;
@@ -78,7 +77,6 @@ public class UserBean {
         }else{
             return "register";
         }
-        
     }
     
     public String loginUser(){

@@ -8,12 +8,12 @@
     <h:body>
         <h1>Login</h1>
         <br />
-        <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
+        <!--<h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />-->
         
         <h:form>
             Username: <h:inputText id="test" value="#{userBean.username}"/><br/>
             Password: <h:inputSecret id="test2" value="#{userBean.password}"/><br/>
-            <h:commandButton id="testBtn" value="Next" action="#{userBean.loginUser()}"/>
+            <h:commandButton id="testBtn" value="Login" action="#{userBean.loginUser()}"/><br/><br/>
             If not registered, press <h:commandLink id="lnkRegister" value="Register" action="register"/>
         </h:form>
     </h:body>
