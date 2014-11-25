@@ -14,6 +14,7 @@
             Username: <h:inputText id="test" value="#{userBean.username}"/><br/>
             Password: <h:inputSecret id="test2" value="#{userBean.password}"/><br/>
             <h:commandButton id="testBtn" value="Next" action="#{userBean.loginUser()}"/>
+            If not registered, press <h:commandLink id="lnkRegister" value="Register" action="register"/>
         </h:form>
     </h:body>
 </html>

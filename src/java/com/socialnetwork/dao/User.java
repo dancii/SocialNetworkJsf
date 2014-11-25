@@ -7,25 +7,26 @@ package com.socialnetwork.dao;
 
 import com.socialnetwork.bean.UserBean;
 import com.socialnetwork.model.UserModel;
-import com.socialnetwork.util.HibernateUtil;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Persistence;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 
 /**
  *
- * @author Dancii
+ * @author dancii
  */
 @Entity
 @Table(name = "User")
@@ -126,40 +127,55 @@ public class User implements Serializable {
     }
     
     public Boolean registerUser(UserBean user){
-        Boolean registerSuccess=false;
-        User userDao = null;
-        userDao=returnUser(user);
+        Boolean registerSuccess = false;
+        User userDao=null;
+        EntityTransaction trans = null;
+        EntityManagerFactory emf=null;
+        EntityManager em=null;
         
-        Transaction trans=null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
         try{
-            trans=session.beginTransaction();
-            session.save(userDao);
-            session.getTransaction().commit();
+            emf = Persistence.createEntityManagerFactory("SocialNetworkJsfPU");
+            em = emf.createEntityManager();
+
+            userDao=returnUser(user);
+            trans=em.getTransaction();
+            trans.begin();
+            em.persist(userDao);
+
+            em.flush();
+            trans.commit();
             registerSuccess=true;
         }catch(Exception e){
             if(trans!=null){
                 trans.rollback();
             }
-            e.printStackTrace();
         }finally{
-            session.flush();
-            session.close();
+            if(em!=null){
+                em.close();
+            }
+            if(emf!=null){
+                emf.close();
+            }
         }
+
         return registerSuccess;
     }
     
     public UserModel loginUser(UserBean user){
-        User userDao = null;
+        User userDao=null;
         UserModel userModel=null;
+        EntityManagerFactory emf=null;
+        EntityManager em=null;
         
-        Transaction trans=null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
         try{
-            Query query= session.createQuery("from User where username = :username and password = :password");
-            query.setParameter("username", user.getUsername());
-            query.setParameter("password", user.getPassword());
-            userDao = (User) query.uniqueResult();
+            emf = Persistence.createEntityManagerFactory("SocialNetworkJsfPU");
+            em = emf.createEntityManager();
+
+            Query query = em.createQuery("SELECT u FROM User u WHERE u.username = :username AND u.password = :password");
+            query.setParameter("username",user.getUsername());
+            query.setParameter("password",user.getPassword());
+            userDao = (User) query.getSingleResult();
+            
             if(userDao!=null){
                 userModel = new UserModel();
                 userModel.setUsername(userDao.getUsername());
@@ -167,14 +183,16 @@ public class User implements Serializable {
                 userModel.setLastname(userDao.getLastname());
                 userModel.setEmail(userDao.getEmail());
             }
+            
         }catch(Exception e){
-            if(trans!=null){
-                trans.rollback();
-            }
             e.printStackTrace();
         }finally{
-            session.flush();
-            session.close();
+            if(em!=null){
+                em.close();
+            }
+            if(emf!=null){
+                emf.close();
+            }
         }
         return userModel;
     }

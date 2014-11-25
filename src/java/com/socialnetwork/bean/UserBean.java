@@ -5,7 +5,7 @@ import javax.faces.bean.SessionScoped;
 import com.socialnetwork.dao.User;
 import com.socialnetwork.model.UserModel;
 
-@ManagedBean(eager = true)
+@ManagedBean
 @SessionScoped
 public class UserBean {
 
