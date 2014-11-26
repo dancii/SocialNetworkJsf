@@ -6,6 +6,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import com.socialnetwork.dao.User;
 import com.socialnetwork.model.UserModel;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @ManagedBean
 @SessionScoped
@@ -73,8 +77,23 @@ public class UserBean {
     public String registerUser(){
         String registerSuccess="";
         UserRestClient userClient = new UserRestClient();
+        Gson gson = new Gson();
+        String gsonUserReg="";
+        UserModel userModel = new UserModel();
         
-        registerSuccess=userClient.registerUser(username, password, firstname, lastname, email);
+        userModel.setUsername(username);
+        userModel.setPassword(password);
+        userModel.setFirstname(firstname);
+        userModel.setLastname(lastname);
+        userModel.setEmail(email);
+        
+        gsonUserReg=gson.toJson(userModel);
+        System.out.println("TEEEEEEEEEEEEEESTSTTT!!!!!!!"+gsonUserReg);
+        try {
+            registerSuccess=userClient.registerUser(URLEncoder.encode(gsonUserReg,"UTF-8"));
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(UserBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         if(registerSuccess.equalsIgnoreCase("true")){
             return "index";
@@ -86,9 +105,6 @@ public class UserBean {
     public String loginUser(){
         Gson gson = new Gson();
         UserRestClient userClient = new UserRestClient();
-        
-        /*User user=new User();
-        userModel=user.loginUser(this);*/
         
         userModel = gson.fromJson(userClient.loginUser(username, password), UserModel.class);
         System.out.println("CHECKIING!!!!!!!!!!!!!!!!"+userModel.getFirstname());

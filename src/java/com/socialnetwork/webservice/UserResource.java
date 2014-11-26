@@ -50,11 +50,11 @@ public class UserResource {
     }
     
     @POST
-    @Path("userregister/{user}/{pass}/{firstname}/{lastname}/{email}")
+    @Path("userregister/{user}")
     @Produces("application/json")
-    public String registerUser(@PathParam("user")String user,@PathParam("pass")String pass,@PathParam("firstname")String firstname,@PathParam("lastname")String lastname,@PathParam("email")String email){
+    public String registerUser(@PathParam("user")String user){
         
-        return UserHandler.registerUser(user,pass,firstname,lastname,email);
+        return UserHandler.registerUser(user);
     }
 
     /**

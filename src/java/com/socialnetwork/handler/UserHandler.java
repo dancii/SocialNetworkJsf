@@ -17,18 +17,14 @@ public class UserHandler {
         return gson.toJson(userDao.loginUser(user));
     }
     
-    public static String registerUser(String username, String pass, String firstname, String lastname, String email){
-        UserModel user = new UserModel();
+    public static String registerUser(String user){
+        UserModel userModel = new UserModel();
         User userDao=new User();
         Gson gson = new Gson();
         
-        user.setUsername(username);
-        user.setPassword(pass);
-        user.setFirstname(firstname);
-        user.setLastname(lastname);
-        user.setEmail(email);
-        
-        return userDao.registerUser(user);
+        userModel = gson.fromJson(user, UserModel.class);
+
+        return userDao.registerUser(userModel);
     }
     
 }
