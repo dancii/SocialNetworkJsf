@@ -25,6 +25,9 @@ and open the template in the editor.
         <div>
             <div id="left">
                 <h3>Welcome #{userBean.userModel.firstname}</h3>
+                <h:form>
+                    <h:commandLink value="Profile" action="profile"/>
+                </h:form>
                 <ui:insert name="left">Left</ui:insert>
             </div>
             <div id="content" class="left_content">
