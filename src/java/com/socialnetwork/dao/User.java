@@ -117,8 +117,8 @@ public class User implements Serializable {
         this.email = email;
     }
     
-    public Boolean registerUser(UserBean user){
-        Boolean registerSuccess = false;
+    public String registerUser(UserModel user){
+        String registerSuccess = "false";
         User userDao=null;
         EntityTransaction trans = null;
         EntityManagerFactory emf=null;
@@ -135,7 +135,7 @@ public class User implements Serializable {
 
             em.flush();
             trans.commit();
-            registerSuccess=true;
+            registerSuccess="true";
         }catch(Exception e){
             if(trans!=null){
                 trans.rollback();
@@ -188,7 +188,7 @@ public class User implements Serializable {
         return userModel;
     }
     
-    public User returnUser(UserBean user){
+    public User returnUser(UserModel user){
         User userDao = new User();
         userDao.username=user.getUsername();
         userDao.password=user.getPassword();

@@ -71,10 +71,12 @@ public class UserBean {
     
     
     public String registerUser(){
-        Boolean registerSuccess=false;
-        User user=new User();
-        user.registerUser(this);
-        if(registerSuccess){
+        String registerSuccess="";
+        UserRestClient userClient = new UserRestClient();
+        
+        registerSuccess=userClient.registerUser(username, password, firstname, lastname, email);
+        
+        if(registerSuccess.equalsIgnoreCase("true")){
             return "index";
         }else{
             return "register";

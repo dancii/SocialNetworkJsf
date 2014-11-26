@@ -39,6 +39,10 @@ public class UserRestClient {
         return webTarget.path(java.text.MessageFormat.format("userlogin/{0}/{1}", new Object[]{user, pass})).request().post(null, String.class);
     }
 
+    public String registerUser(String user, String pass, String firstname, String lastname, String email) throws ClientErrorException {
+        return webTarget.path(java.text.MessageFormat.format("userregister/{0}/{1}/{2}/{3}/{4}", new Object[]{user, pass, firstname, lastname, email})).request().post(null, String.class);
+    }
+
     public String getJson() throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);

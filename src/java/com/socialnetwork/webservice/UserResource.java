@@ -44,9 +44,17 @@ public class UserResource {
     @POST
     @Path("userlogin/{user}/{pass}")
     @Produces("application/json")
-    public String loginUser(@PathParam("user")String userStr,@PathParam("pass")String passStr){
+    public String loginUser(@PathParam("user")String username,@PathParam("pass")String pass){
         
-        return UserHandler.loginUser(userStr,passStr);
+        return UserHandler.loginUser(username,pass);
+    }
+    
+    @POST
+    @Path("userregister/{user}/{pass}/{firstname}/{lastname}/{email}")
+    @Produces("application/json")
+    public String registerUser(@PathParam("user")String user,@PathParam("pass")String pass,@PathParam("firstname")String firstname,@PathParam("lastname")String lastname,@PathParam("email")String email){
+        
+        return UserHandler.registerUser(user,pass,firstname,lastname,email);
     }
 
     /**
