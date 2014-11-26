@@ -152,7 +152,7 @@ public class User implements Serializable {
         return registerSuccess;
     }
     
-    public UserModel loginUser(UserBean user){
+    public UserModel loginUser(UserModel user){
         User userDao=null;
         UserModel userModel=null;
         EntityManagerFactory emf=null;

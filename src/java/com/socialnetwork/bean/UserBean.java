@@ -1,5 +1,7 @@
 package com.socialnetwork.bean;
 
+import com.google.gson.Gson;
+import com.socialnetwork.client.UserRestClient;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import com.socialnetwork.dao.User;
@@ -80,9 +82,14 @@ public class UserBean {
     }
     
     public String loginUser(){
+        Gson gson = new Gson();
+        UserRestClient userClient = new UserRestClient();
         
-        User user=new User();
-        userModel=user.loginUser(this);
+        /*User user=new User();
+        userModel=user.loginUser(this);*/
+        
+        userModel = gson.fromJson(userClient.loginUser(username, password), UserModel.class);
+        System.out.println("CHECKIING!!!!!!!!!!!!!!!!"+userModel.getFirstname());
         if(userModel!=null){
             return "welcome";
         }else{
