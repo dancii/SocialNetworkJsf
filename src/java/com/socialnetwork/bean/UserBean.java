@@ -5,7 +5,6 @@ import com.google.gson.reflect.TypeToken;
 import com.socialnetwork.client.UserRestClient;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import com.socialnetwork.dao.User;
 import com.socialnetwork.model.UserModel;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -202,8 +201,6 @@ public class UserBean {
         }else{
             username="";
         }
-        
-        
     }
     
     public void clearAll(){

@@ -5,17 +5,22 @@
  */
 package com.socialnetwork.dao;
 
+import com.socialnetwork.model.WallpostModel;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Persistence;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -118,8 +123,49 @@ public class Wallpost implements Serializable {
         this.date = date;
     }
     
-    public void postOnWall(){
+    public String postOnWall(WallpostModel wallPostModel){
+        String registerSuccess = "false";
+        Wallpost wallPost = null;
+        EntityTransaction trans = null;
+        EntityManagerFactory emf=null;
+        EntityManager em=null;
         
+        try{
+            emf = Persistence.createEntityManagerFactory("SocialNetworkJsfPU");
+            em = emf.createEntityManager();
+
+            wallPost=returnPost(wallPostModel);
+            trans=em.getTransaction();
+            trans.begin();
+            em.persist(wallPost);
+
+            em.flush();
+            trans.commit();
+            registerSuccess="true";
+        }catch(Exception e){
+            if(trans!=null){
+                trans.rollback();
+            }
+        }finally{
+            if(em!=null){
+                em.close();
+            }
+            if(emf!=null){
+                emf.close();
+            }
+        }
+
+        return registerSuccess;
+    }
+    
+    public Wallpost returnPost(WallpostModel wallPostModel){
+        Wallpost wallPost = new Wallpost();
+        
+        wallPost.setMessage(wallPostModel.getMessage());
+        wallPost.setFromid(wallPostModel.getFromId());
+        wallPost.setToid(wallPostModel.getToId());
+        
+        return wallPost;
     }
 
     @Override

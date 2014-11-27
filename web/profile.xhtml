@@ -26,7 +26,9 @@
             <div id="content" class="left_content">
                 <h:form>
                     <h:inputTextarea id="txtAreaWallPost" value="#{wallpostBean.message}" />
-                    
+                    <input type="hidden" name="fromId" value="#{userBean.userModel.id}" />
+                    <input type="hidden" name="toId" value="#{userBean.userProfile.id}" />
+                    <h:commandButton id="cmdBtbWallPost" value="Post" action="#{wallpostBean.postOnWall()}" />
                 </h:form>
                 <ui:insert name="content">Content</ui:insert>
             </div>

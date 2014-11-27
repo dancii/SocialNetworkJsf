@@ -171,6 +171,7 @@ public class User implements Serializable {
             
             if(userDao!=null){
                 userModel = new UserModel();
+                userModel.setId(userDao.getId());
                 userModel.setUsername(userDao.getUsername());
                 userModel.setFirstname(userDao.getFirstname());
                 userModel.setLastname(userDao.getLastname());
@@ -237,6 +238,7 @@ public class User implements Serializable {
     
     public User returnUser(UserModel user){
         User userDao = new User();
+        userDao.id=user.getId();
         userDao.username=user.getUsername();
         userDao.password=user.getPassword();
         userDao.firstname=user.getFirstname();

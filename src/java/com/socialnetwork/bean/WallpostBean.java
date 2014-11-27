@@ -3,6 +3,7 @@ package com.socialnetwork.bean;
 import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 
 @ManagedBean
@@ -50,7 +51,12 @@ public class WallpostBean {
     }
     
     public void postOnWall(){
+        fromId = Integer.parseInt(FacesContext.getCurrentInstance().
+		getExternalContext().getRequestParameterMap().get("fromId"));
+        toId=Integer.parseInt(FacesContext.getCurrentInstance().
+		getExternalContext().getRequestParameterMap().get("toId"));
         
+        System.out.println("TESYSYSYSYFUOAJDFPAJSPDOJASPOJD:     Message: "+message+" fromID: "+fromId+" toId: "+toId);
     }
     
 }
