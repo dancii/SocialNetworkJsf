@@ -24,11 +24,15 @@ public class UserBean {
     private String firstname;
     private String lastname;
     private String email;
-    private UserModel userModel=null;
-    private List<UserModel> userList;
+    private UserModel userModel= null;
+    private List<UserModel> userList = new ArrayList<UserModel>();
     
-    public UserBean() {}
-
+    public UserBean() {
+        UserModel mod = new UserModel();
+        mod.setUsername("");
+        userList.add(mod);
+    }
+    
     public String getUsername() {
         return username;
     }
@@ -134,7 +138,7 @@ public class UserBean {
         userList = new ArrayList<UserModel>();
         
         userList = gson.fromJson(userClient.searchUser(username),new TypeToken<List<UserModel>>() {}.getType());
-        
+        System.out.println(userList.get(0).getUsername());
         
     }
     
