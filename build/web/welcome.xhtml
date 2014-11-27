@@ -8,7 +8,8 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
     
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -28,7 +29,7 @@ and open the template in the editor.
             <div id="left">
                 <h3>Welcome #{userBean.userModel.firstname}</h3>
                 <h:form>
-                    <h:commandLink value="Profile" action="profile"/>
+                    <h:commandLink value="Profile" action="#{userBean.checkProfile()}"/>
                 </h:form>
                 <ui:insert name="left">Left</ui:insert>
             </div>
@@ -36,14 +37,13 @@ and open the template in the editor.
                 <ui:insert name="content">Content</ui:insert>
                 
                   <h:form>
-                    <h:panelGrid columns="3">
-                        <h:outputText value="Keyup: " />
-                            <p:inputText id="counter" value="#{userBean.username}">
-                            <p:ajax event="keyup" update="out" listener="#{userBean.searchUserByUsername}" />
-                            </p:inputText>
-                        <h:outputText id="out" value="#{userBean.userList.get(0).getUsername()}" />
-    </h:panelGrid>
-</h:form>
+
+                    <p:outputLabel value="Search:" for="autocomplete" />
+                    <p:autoComplete id="autocomplete" value="#{userBean.username}" completeMethod="#{userBean.searchUserByUsername}" >
+                        <p:ajax event="itemSelect" listener="#{userBean.redirectToProfile}" process="@form"/>
+                    </p:autoComplete>
+                
+                </h:form>
                 
             </div>
         </div>

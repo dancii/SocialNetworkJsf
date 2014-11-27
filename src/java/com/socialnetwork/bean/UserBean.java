@@ -7,12 +7,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import com.socialnetwork.dao.User;
 import com.socialnetwork.model.UserModel;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 
 
 @ManagedBean
@@ -27,6 +30,7 @@ public class UserBean {
     private String email;
     private UserModel userModel= null;
     private List<UserModel> userList = new ArrayList<UserModel>();
+    private UserModel userProfile=null;
     
     public UserBean() {
         UserModel mod = new UserModel();
@@ -98,8 +102,20 @@ public class UserBean {
     public void setUserList(List<UserModel> userList) {
         this.userList = userList;
     }
+
+    public UserModel getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserModel userProfile) {
+        this.userProfile = userProfile;
+    }
     
     
+    public String checkProfile(){
+        userProfile = userModel;
+        return "profile";
+    }
     
     public String registerUser(){
         String registerSuccess="";
@@ -148,37 +164,46 @@ public class UserBean {
     public ArrayList<String> searchUserByUsername(String query){
         Gson gson = new Gson();
         UserRestClient userClient = new UserRestClient();
-        userList = new ArrayList<UserModel>();
-        username = query;
-        
-        
-        System.out.println("jkansdLKJNADANLSDKJASJdknad:" + username);
-        
-        if (username.equalsIgnoreCase("")){
-            UserModel mod = new UserModel();
-            mod.setUsername("");
-            userList.add(mod); 
-   
-        } else {
-            userList = gson.fromJson(userClient.searchUser(username),new TypeToken<List<UserModel>>() {}.getType());
-        }
-        
-       
-        
-        System.out.println("usuusuususu:" + userList.get(0).getUsername());
         ArrayList<String> strList = new ArrayList<String>();
-        //strList.add(userList.get(0).getUsername());
+        userList = new ArrayList<UserModel>();
         
+        username = query;
+        userList = gson.fromJson(userClient.searchUser(username),new TypeToken<List<UserModel>>() {}.getType());
         
-        for(int i = 0; i < userList.size(); i++) {
-            strList.add(userList.get(i).getUsername());
+        if(!userList.isEmpty()){
+            for(int i = 0; i < userList.size(); i++) {
+                strList.add(userList.get(i).getUsername());
+            }
+        }else{
+            strList.add("No results");
         }
         
         
-       
-        clearAll();
         return strList;
-
+    }
+    
+    public void redirectToProfile(AjaxBehaviorEvent event){
+        
+        if(!userList.isEmpty()){
+            
+            for(int i=0;i<userList.size();i++){
+                if(userList.get(i).getUsername().equals(username)){
+                    userProfile=userList.get(i);
+                }
+            }
+            
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("profile.xhtml");
+            } catch (IOException ex) {
+                Logger.getLogger(UserBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+        }else{
+            username="";
+        }
+        
+        
     }
     
     public void clearAll(){

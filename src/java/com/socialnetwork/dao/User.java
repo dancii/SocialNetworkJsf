@@ -211,6 +211,9 @@ public class User implements Serializable {
                     userModel = new UserModel();
                     userModel.setId(userDao.get(i).getId());
                     userModel.setUsername(userDao.get(i).getUsername());
+                    userModel.setFirstname(userDao.get(i).getFirstname());
+                    userModel.setLastname(userDao.get(i).getLastname());
+                    userModel.setEmail(userDao.get(i).getLastname());
                     userList.add(userModel);
                 }
             } else {
