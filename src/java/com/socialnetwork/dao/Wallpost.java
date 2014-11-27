@@ -41,6 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Wallpost.findByFromid", query = "SELECT w FROM Wallpost w WHERE w.fromid = :fromid"),
     @NamedQuery(name = "Wallpost.findByToid", query = "SELECT w FROM Wallpost w WHERE w.toid = :toid"),
     @NamedQuery(name = "Wallpost.findByDate", query = "SELECT w FROM Wallpost w WHERE w.date = :date")})
+
 public class Wallpost implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -154,18 +155,17 @@ public class Wallpost implements Serializable {
                 emf.close();
             }
         }
-
         return registerSuccess;
     }
     
     public Wallpost returnPost(WallpostModel wallPostModel){
-        Wallpost wallPost = new Wallpost();
+        Wallpost wallPostDao = new Wallpost();
         
-        wallPost.setMessage(wallPostModel.getMessage());
-        wallPost.setFromid(wallPostModel.getFromId());
-        wallPost.setToid(wallPostModel.getToId());
-        
-        return wallPost;
+        wallPostDao.setMessage(wallPostModel.getMessage());
+        wallPostDao.setFromid(wallPostModel.getFromId());
+        wallPostDao.setToid(wallPostModel.getToId());
+        wallPostDao.setDate(new Date());
+        return wallPostDao;
     }
 
     @Override

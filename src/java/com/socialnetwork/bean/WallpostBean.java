@@ -1,6 +1,13 @@
 package com.socialnetwork.bean;
 
+import com.google.gson.Gson;
+import com.socialnetwork.client.WallpostRestClient;
+import com.socialnetwork.model.WallpostModel;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -50,13 +57,35 @@ public class WallpostBean {
         this.date = date;
     }
     
-    public void postOnWall(){
+    public String postOnWall(){
+        WallpostRestClient wallPostRestClient=new WallpostRestClient();
+        WallpostModel wallpostModel = new WallpostModel();
+        Gson gson = new Gson();
+        String checkIfPostSuccess="false";
+        
+        
         fromId = Integer.parseInt(FacesContext.getCurrentInstance().
 		getExternalContext().getRequestParameterMap().get("fromId"));
         toId=Integer.parseInt(FacesContext.getCurrentInstance().
 		getExternalContext().getRequestParameterMap().get("toId"));
         
-        System.out.println("TESYSYSYSYFUOAJDFPAJSPDOJASPOJD:     Message: "+message+" fromID: "+fromId+" toId: "+toId);
+        wallpostModel.setMessage(message);
+        wallpostModel.setFromId(fromId);
+        wallpostModel.setToId(toId);
+        
+        try {
+            checkIfPostSuccess=gson.fromJson(wallPostRestClient.sendPost(URLEncoder.encode(gson.toJson(wallpostModel),"UTF-8")), String.class);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(WallpostBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if(checkIfPostSuccess.equalsIgnoreCase("true")){
+            return "profile";
+        }else{
+            return "welcome";
+        }
+        
+        //System.out.println("TESYSYSYSYFUOAJDFPAJSPDOJASPOJD:     Message: "+message+" fromID: "+fromId+" toId: "+toId);
     }
     
 }

@@ -30,6 +30,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.socialnetwork.webservice.UserResource.class);
+        resources.add(com.socialnetwork.webservice.WallPostResource.class);
     }
     
 }
