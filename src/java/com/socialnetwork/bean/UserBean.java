@@ -19,6 +19,7 @@ import org.apache.catalina.ant.ResourcesTask;
 @SessionScoped
 public class UserBean {
 
+    private int id;
     private String username;
     private String password;
     private String firstname;
@@ -31,6 +32,14 @@ public class UserBean {
         UserModel mod = new UserModel();
         mod.setUsername("");
         userList.add(mod);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     
     public String getUsername() {
@@ -126,20 +135,38 @@ public class UserBean {
         userModel = gson.fromJson(userClient.loginUser(username, password), UserModel.class);
         System.out.println("CHECKIING!!!!!!!!!!!!!!!!"+userModel.getFirstname());
         if(userModel!=null){
+            clearAll();
             return "welcome";
         }else{
+            clearAll();
             return "index";
         }
+        
     }
     
     public void searchUserByUsername(){
         Gson gson = new Gson();
         UserRestClient userClient = new UserRestClient();
         userList = new ArrayList<UserModel>();
-        
-        userList = gson.fromJson(userClient.searchUser(username),new TypeToken<List<UserModel>>() {}.getType());
+        if (username.equalsIgnoreCase("")){
+            UserModel mod = new UserModel();
+            mod.setUsername("");
+            userList.add(mod); 
+        } else {
+            userList = gson.fromJson(userClient.searchUser(username),new TypeToken<List<UserModel>>() {}.getType());
+        }
         System.out.println(userList.get(0).getUsername());
+      
         
+    }
+    
+    public void clearAll(){
+        id=0;
+        username="";
+        password="";
+        firstname="";
+        lastname="";
+        email="";
     }
     
 }

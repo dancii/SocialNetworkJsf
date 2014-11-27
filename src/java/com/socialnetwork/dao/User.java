@@ -213,6 +213,10 @@ public class User implements Serializable {
                     userModel.setUsername(userDao.get(i).getUsername());
                     userList.add(userModel);
                 }
+            } else {
+                userModel = new UserModel();
+                userModel.setUsername("");
+                userList.add(userModel);
             }
             
         }catch(Exception e){

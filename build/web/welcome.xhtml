@@ -7,7 +7,9 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <h:outputStylesheet name="./css/default.css"/>
@@ -32,7 +34,19 @@ and open the template in the editor.
             </div>
             <div id="content" class="left_content">
                 <ui:insert name="content">Content</ui:insert>
+                
+                  <h:form>
+                    <h:panelGrid columns="3">
+                        <h:outputText value="Keyup: " />
+                            <p:inputText id="counter" value="#{userBean.username}">
+                            <p:ajax event="keyup" update="out" listener="#{userBean.searchUserByUsername}" />
+                            </p:inputText>
+                        <h:outputText id="out" value="#{userBean.userList.get(0).getUsername()}" />
+    </h:panelGrid>
+</h:form>
+                
             </div>
         </div>
+        
     </h:body>
 </html>
