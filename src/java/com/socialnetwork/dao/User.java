@@ -3,6 +3,8 @@ package com.socialnetwork.dao;
 import com.socialnetwork.bean.UserBean;
 import com.socialnetwork.model.UserModel;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -186,6 +188,44 @@ public class User implements Serializable {
             }
         }
         return userModel;
+    }
+    
+    public List<UserModel> searchUserByUsername(String username){
+        List<User> userDao=null;
+        List<UserModel> userList=new ArrayList<UserModel>();
+        UserModel userModel=null;
+        EntityManagerFactory emf=null;
+        EntityManager em=null;
+        
+        
+        try{
+            emf = Persistence.createEntityManagerFactory("SocialNetworkJsfPU");
+            em = emf.createEntityManager();
+
+            Query query = em.createQuery("SELECT u FROM User u WHERE u.username like :username");
+            query.setParameter("username","%"+username+"%");
+            userDao = query.getResultList();
+            
+            if(userDao!=null){
+                for(int i=0;i<userDao.size();i++){
+                    userModel = new UserModel();
+                    userModel.setId(userDao.get(i).getId());
+                    userModel.setUsername(userDao.get(i).getUsername());
+                    userList.add(userModel);
+                }
+            }
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            if(em!=null){
+                em.close();
+            }
+            if(emf!=null){
+                emf.close();
+            }
+        }
+        return userList;
     }
     
     public User returnUser(UserModel user){

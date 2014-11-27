@@ -1,6 +1,7 @@
 package com.socialnetwork.bean;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.socialnetwork.client.UserRestClient;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -8,8 +9,11 @@ import com.socialnetwork.dao.User;
 import com.socialnetwork.model.UserModel;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.catalina.ant.ResourcesTask;
 
 @ManagedBean
 @SessionScoped
@@ -21,6 +25,7 @@ public class UserBean {
     private String lastname;
     private String email;
     private UserModel userModel=null;
+    private List<UserModel> userList;
     
     public UserBean() {}
 
@@ -71,6 +76,14 @@ public class UserBean {
     public void setUserModel(UserModel userModel) {
         this.userModel = userModel;
     }
+
+    public List<UserModel> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<UserModel> userList) {
+        this.userList = userList;
+    }
     
     
     
@@ -113,6 +126,16 @@ public class UserBean {
         }else{
             return "index";
         }
+    }
+    
+    public void searchUserByUsername(){
+        Gson gson = new Gson();
+        UserRestClient userClient = new UserRestClient();
+        userList = new ArrayList<UserModel>();
+        
+        userList = gson.fromJson(userClient.searchUser(username),new TypeToken<List<UserModel>>() {}.getType());
+        
+        
     }
     
 }

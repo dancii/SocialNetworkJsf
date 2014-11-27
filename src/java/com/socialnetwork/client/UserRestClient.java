@@ -39,6 +39,10 @@ public class UserRestClient {
         return webTarget.path(java.text.MessageFormat.format("userlogin/{0}/{1}", new Object[]{user, pass})).request().post(null, String.class);
     }
 
+    public String searchUser(String username) throws ClientErrorException {
+        return webTarget.path(java.text.MessageFormat.format("usersearch/{0}", new Object[]{username})).request().post(null, String.class);
+    }
+
     public String registerUser(String user) throws ClientErrorException {
         return webTarget.path(java.text.MessageFormat.format("userregister/{0}", new Object[]{user})).request().post(null, String.class);
     }

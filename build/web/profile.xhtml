@@ -25,6 +25,10 @@
                 <ui:insert name="left">Left</ui:insert>
             </div>
             <div id="content" class="left_content">
+                <h:form>
+                    <h:inputTextarea id="txtAreaWallPost" value="#{wallpostBean.message}" />
+                    
+                </h:form>
                 <ui:insert name="content">Content</ui:insert>
             </div>
         </div>

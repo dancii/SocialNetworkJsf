@@ -3,6 +3,8 @@ package com.socialnetwork.handler;
 import com.google.gson.Gson;
 import com.socialnetwork.dao.User;
 import com.socialnetwork.model.UserModel;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserHandler {
     
@@ -27,4 +29,16 @@ public class UserHandler {
         return userDao.registerUser(userModel);
     }
     
+    public static String searchUserByUsername(String username){
+        String searchUsername ="";
+        User userDao = new User();
+        Gson gson = new Gson();
+        List<UserModel> userList=new ArrayList<UserModel>();
+        
+        searchUsername = gson.fromJson(username, String.class);
+        userList = userDao.searchUserByUsername(searchUsername);
+        
+        return gson.toJson(userList);
+        
+    }
 }

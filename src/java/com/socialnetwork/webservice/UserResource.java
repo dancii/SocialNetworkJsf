@@ -56,7 +56,14 @@ public class UserResource {
         
         return UserHandler.registerUser(user);
     }
-
+    
+    @POST
+    @Path("usersearch/{username}")
+    @Produces("application/json")
+    public String searchUser(@PathParam("username")String username){
+        return UserHandler.searchUserByUsername(username);
+    }
+    
     /**
      * PUT method for updating or creating an instance of UserResource
      * @param content representation for the resource
