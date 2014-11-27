@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.catalina.ant.ResourcesTask;
+
 
 @ManagedBean
 @SessionScoped
@@ -33,7 +33,8 @@ public class UserBean {
         mod.setUsername("");
         userList.add(mod);
     }
-
+    
+    
     public int getId() {
         return id;
     }
@@ -144,20 +145,40 @@ public class UserBean {
         
     }
     
-    public void searchUserByUsername(){
+    public ArrayList<String> searchUserByUsername(String query){
         Gson gson = new Gson();
         UserRestClient userClient = new UserRestClient();
         userList = new ArrayList<UserModel>();
+        username = query;
+        
+        
+        System.out.println("jkansdLKJNADANLSDKJASJdknad:" + username);
+        
         if (username.equalsIgnoreCase("")){
             UserModel mod = new UserModel();
             mod.setUsername("");
             userList.add(mod); 
+   
         } else {
             userList = gson.fromJson(userClient.searchUser(username),new TypeToken<List<UserModel>>() {}.getType());
         }
-        System.out.println(userList.get(0).getUsername());
-      
         
+       
+        
+        System.out.println("usuusuususu:" + userList.get(0).getUsername());
+        ArrayList<String> strList = new ArrayList<String>();
+        //strList.add(userList.get(0).getUsername());
+        
+        
+        for(int i = 0; i < userList.size(); i++) {
+            strList.add(userList.get(i).getUsername());
+        }
+        
+        
+       
+        clearAll();
+        return strList;
+
     }
     
     public void clearAll(){
