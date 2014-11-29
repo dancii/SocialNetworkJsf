@@ -52,7 +52,7 @@ public class WallPostResource {
     }
     
     @POST
-    @Path("sendPost/{toId}")
+    @Path("getAllPost/{toId}")
     @Produces("application/json")
     public String getAllwallPostToUser(@PathParam("toId")String toId){
         return WallpostHandler.getAllWallpost(toId);

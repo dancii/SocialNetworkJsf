@@ -83,6 +83,7 @@ public class WallpostHandler {
                     wallPostModel.setFromId(wallPostDaoList.get(i).getFromid());
                     wallPostModel.setDatetime(wallPostDaoList.get(i).getDate());
                     wallPostList.add(wallPostModel);
+                    System.out.println("CHECKING ERROR !!!!!!!!!!!! MESSAGE: "+wallPostDaoList.get(i).getMessage());
                 }
             }else{
                 wallPostModel=new WallpostModel();

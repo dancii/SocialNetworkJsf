@@ -102,12 +102,12 @@ public class WallpostBean {
         
     }
     
-    public List<WallpostModel> getAllWallpostToUser(){
+    public List<WallpostModel> getAllWallpostToUser(int fromId){
         String gsonAnswer="";
         Gson gson = new Gson();
         WallpostRestClient wallPostRestClient=new WallpostRestClient();
         
-        gsonAnswer = wallPostRestClient.getAllwallPostToUser(gson.toJson(1));
+        gsonAnswer = wallPostRestClient.getAllwallPostToUser(gson.toJson(fromId));
         
         wallpostModelList = gson.fromJson(gsonAnswer, new TypeToken<List<WallpostModel>>() {}.getType());
         return wallpostModelList;

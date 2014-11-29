@@ -215,9 +215,9 @@ public class UserBean {
         }
     }
     
-    /*public void getAllWallpostToUser(){
-        wallpostBean.getAllWallpostToUser(userProfile.getId());
-    }*/
+    public List<WallpostModel> getAllWallpostToUser(){
+        return wallpostBean.getAllWallpostToUser(userProfile.getId());
+    }
     
     public void clearAll(){
         id=0;

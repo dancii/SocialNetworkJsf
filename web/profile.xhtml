@@ -34,8 +34,11 @@
                 
                 <h:form>
                     
-                    <p:dataTable var="wallPost" value="#{wallpostBean.allWallpostToUser}">
-                        <p:column headerText="Id">
+                    <p:dataTable var="wallPost" value="#{userBean.allWallpostToUser}">
+                        <p:column headerText="From">
+                            <h:outputText value="#{wallPost.id}" />
+                        </p:column>
+                        <p:column headerText="Message">
                             <h:outputText value="#{wallPost.message}" />
                         </p:column>
                         
