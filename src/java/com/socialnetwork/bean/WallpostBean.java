@@ -6,6 +6,7 @@ import com.socialnetwork.client.WallpostRestClient;
 import com.socialnetwork.model.WallpostModel;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -69,48 +70,54 @@ public class WallpostBean {
     }
     
     public String postOnWall(){
-        WallpostRestClient wallPostRestClient=new WallpostRestClient();
-        WallpostModel wallpostModel = new WallpostModel();
-        Gson gson = new Gson();
-        String checkIfPostSuccess="false";
-        String sendPost = "";
-        
-        
-        fromUsername = FacesContext.getCurrentInstance().
-		getExternalContext().getRequestParameterMap().get("fromId");
-        toUsername=FacesContext.getCurrentInstance().
-		getExternalContext().getRequestParameterMap().get("toId");
-        
-        wallpostModel.setMessage(message);
-        wallpostModel.setFromUsername(fromUsername);
-        wallpostModel.setToUsername(toUsername);
-        
-        sendPost=gson.toJson(wallpostModel);
-        
-        try {
-            checkIfPostSuccess=gson.fromJson(wallPostRestClient.sendPost(URLEncoder.encode(sendPost,"UTF-8")), String.class);
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(WallpostBean.class.getName()).log(Level.SEVERE, null, ex);
+        if(!message.equals("")){
+            WallpostRestClient wallPostRestClient=new WallpostRestClient();
+            WallpostModel wallpostModel = new WallpostModel();
+            Gson gson = new Gson();
+            String checkIfPostSuccess="false";
+            String sendPost = "";
+
+
+            fromUsername = FacesContext.getCurrentInstance().
+                    getExternalContext().getRequestParameterMap().get("fromId");
+            toUsername=FacesContext.getCurrentInstance().
+                    getExternalContext().getRequestParameterMap().get("toId");
+
+            wallpostModel.setMessage(message);
+            wallpostModel.setFromUsername(fromUsername);
+            wallpostModel.setToUsername(toUsername);
+
+            sendPost=gson.toJson(wallpostModel);
+
+            try {
+                checkIfPostSuccess=gson.fromJson(wallPostRestClient.sendPost(URLEncoder.encode(sendPost,"UTF-8")), String.class);
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(WallpostBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            clearAll();
+            if(checkIfPostSuccess.equalsIgnoreCase("true")){
+                return "profile";
+            }else{
+                return "welcome";
+            }
         }
+
         
-        clearAll();
-        if(checkIfPostSuccess.equalsIgnoreCase("true")){
-            return "profile";
-        }else{
-            return "welcome";
-        }
         
+        return "profile";
     }
     
     public List<WallpostModel> getAllWallpostToUser(String fromUsername){
         String gsonAnswer="";
         Gson gson = new Gson();
+        wallpostModelList=new ArrayList<WallpostModel>();
         WallpostRestClient wallPostRestClient=new WallpostRestClient();
-        
+
         gsonAnswer = wallPostRestClient.getAllwallPostToUser(gson.toJson(fromUsername));
-        
+
         wallpostModelList = gson.fromJson(gsonAnswer, new TypeToken<List<WallpostModel>>() {}.getType());
-        return wallpostModelList;
+       return wallpostModelList;
     }
     
     public void clearAll(){
