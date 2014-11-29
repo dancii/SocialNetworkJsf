@@ -2,6 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
 
     <h:head>
@@ -29,6 +30,17 @@
                     <input type="hidden" name="fromId" value="#{userBean.userModel.id}" />
                     <input type="hidden" name="toId" value="#{userBean.userProfile.id}" />
                     <h:commandButton id="cmdBtbWallPost" value="Post" action="#{wallpostBean.postOnWall()}" />
+                </h:form>
+                
+                <h:form>
+                    
+                    <p:dataTable var="wallPost" value="#{wallpostBean.allWallpostToUser}">
+                        <p:column headerText="Id">
+                            <h:outputText value="#{wallPost.message}" />
+                        </p:column>
+                        
+                    </p:dataTable>
+                    
                 </h:form>
                 <ui:insert name="content">Content</ui:insert>
             </div>

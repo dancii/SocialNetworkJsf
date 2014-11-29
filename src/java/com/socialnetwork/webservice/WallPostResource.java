@@ -50,6 +50,13 @@ public class WallPostResource {
     public String sendPost(@PathParam("post")String post){
         return WallpostHandler.sendPost(post);
     }
+    
+    @POST
+    @Path("sendPost/{toId}")
+    @Produces("application/json")
+    public String getAllwallPostToUser(@PathParam("toId")String toId){
+        return WallpostHandler.getAllWallpost(toId);
+    }
 
     /**
      * PUT method for updating or creating an instance of WallPostResource

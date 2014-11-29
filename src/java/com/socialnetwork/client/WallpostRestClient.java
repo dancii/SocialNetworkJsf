@@ -20,29 +20,33 @@ import javax.ws.rs.client.WebTarget;
  *        client.close();
  * </pre>
  *
- * @author dancii
+ * @author Dancii
  */
 public class WallpostRestClient {
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/SocialNetworkJsf/webresources";
+    private static final String BASE_URI = "http://localhost:8084/SocialNetworkJsf/webresources";
 
     public WallpostRestClient() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
         webTarget = client.target(BASE_URI).path("WallPost");
     }
 
-    public String sendPost(String post) throws ClientErrorException {
-        return webTarget.path(java.text.MessageFormat.format("sendPost/{0}", new Object[]{post})).request().post(null, String.class);
-    }
-
     public void putJson(Object requestEntity) throws ClientErrorException {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON));
+    }
+
+    public String sendPost(String post) throws ClientErrorException {
+        return webTarget.path(java.text.MessageFormat.format("sendPost/{0}", new Object[]{post})).request().post(null, String.class);
     }
 
     public String getJson() throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
+    public String getAllwallPostToUser(String toId) throws ClientErrorException {
+        return webTarget.path(java.text.MessageFormat.format("sendPost/{0}", new Object[]{toId})).request().post(null, String.class);
     }
 
     public void close() {

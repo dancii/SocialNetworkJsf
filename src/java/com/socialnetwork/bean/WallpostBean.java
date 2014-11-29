@@ -1,26 +1,29 @@
 package com.socialnetwork.bean;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.socialnetwork.client.WallpostRestClient;
 import com.socialnetwork.model.WallpostModel;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class WallpostBean {
 
     private String message;
     private int fromId;
     private int toId;
     private Date date;
+    private List<WallpostModel> wallpostModelList;
     
     public WallpostBean() {
     }
@@ -56,6 +59,14 @@ public class WallpostBean {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    public List<WallpostModel> getWallpostModelList() {
+        return wallpostModelList;
+    }
+
+    public void setWallpostModelList(List<WallpostModel> wallpostModelList) {
+        this.wallpostModelList = wallpostModelList;
+    }
     
     public String postOnWall(){
         WallpostRestClient wallPostRestClient=new WallpostRestClient();
@@ -89,6 +100,17 @@ public class WallpostBean {
             return "welcome";
         }
         
+    }
+    
+    public List<WallpostModel> getAllWallpostToUser(){
+        String gsonAnswer="";
+        Gson gson = new Gson();
+        WallpostRestClient wallPostRestClient=new WallpostRestClient();
+        
+        gsonAnswer = wallPostRestClient.getAllwallPostToUser(gson.toJson(1));
+        
+        wallpostModelList = gson.fromJson(gsonAnswer, new TypeToken<List<WallpostModel>>() {}.getType());
+        return wallpostModelList;
     }
     
     public void clearAll(){

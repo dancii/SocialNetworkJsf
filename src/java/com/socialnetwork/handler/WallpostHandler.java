@@ -3,11 +3,14 @@ package com.socialnetwork.handler;
 import com.google.gson.Gson;
 import com.socialnetwork.dao.Wallpost;
 import com.socialnetwork.model.WallpostModel;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 public class WallpostHandler {
 
@@ -49,6 +52,54 @@ public class WallpostHandler {
         }
         
         return gson.toJson(registerSuccess);
+    }
+    
+    public static String getAllWallpost(String toIdStr){
+        Integer toId=-1;
+        Gson gson = new Gson();
+        List<WallpostModel> wallPostList = new ArrayList<WallpostModel>();
+        List<Wallpost> wallPostDaoList = null;
+        WallpostModel wallPostModel=null;
+        EntityManagerFactory emf=null;
+        EntityManager em=null;
+        
+        toId=gson.fromJson(toIdStr, Integer.class);
+        
+        try{
+            emf = Persistence.createEntityManagerFactory("SocialNetworkJsfPU");
+            em = emf.createEntityManager();
+            
+            Query query = em.createNamedQuery("Wallpost.findByToid");
+            query.setParameter("toid", toId);
+            
+            wallPostDaoList = query.getResultList();
+            
+            if(wallPostDaoList!=null){
+                for(int i=0;i<wallPostDaoList.size();i++){
+                    wallPostModel = new WallpostModel();
+                    wallPostModel.setId(wallPostDaoList.get(i).getId());
+                    wallPostModel.setMessage(wallPostDaoList.get(i).getMessage());
+                    wallPostModel.setToId(wallPostDaoList.get(i).getToid());
+                    wallPostModel.setFromId(wallPostDaoList.get(i).getFromid());
+                    wallPostModel.setDatetime(wallPostDaoList.get(i).getDate());
+                    wallPostList.add(wallPostModel);
+                }
+            }else{
+                wallPostModel=new WallpostModel();
+                wallPostModel.setMessage("");
+                wallPostList.add(wallPostModel);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            if(em!=null){
+                em.close();
+            }
+            if(emf!=null){
+                emf.close();
+            }
+        }
+        return gson.toJson(wallPostList);
     }
     
     public static Wallpost returnPost(WallpostModel wallPostModel){

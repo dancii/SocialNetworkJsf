@@ -6,6 +6,7 @@ import com.socialnetwork.client.UserRestClient;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import com.socialnetwork.model.UserModel;
+import com.socialnetwork.model.WallpostModel;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
@@ -30,6 +32,8 @@ public class UserBean {
     private UserModel userModel= null;
     private List<UserModel> userList = new ArrayList<UserModel>();
     private UserModel userProfile=null;
+    @ManagedProperty(value="#{wallpostBean}")
+    private WallpostBean wallpostBean;
     
     public UserBean() {
         UserModel mod = new UserModel();
@@ -108,6 +112,14 @@ public class UserBean {
 
     public void setUserProfile(UserModel userProfile) {
         this.userProfile = userProfile;
+    }
+
+    public WallpostBean getWallpostBean() {
+        return wallpostBean;
+    }
+
+    public void setWallpostBean(WallpostBean wallpostBean) {
+        this.wallpostBean = wallpostBean;
     }
     
     
@@ -202,6 +214,10 @@ public class UserBean {
             username="";
         }
     }
+    
+    /*public void getAllWallpostToUser(){
+        wallpostBean.getAllWallpostToUser(userProfile.getId());
+    }*/
     
     public void clearAll(){
         id=0;
