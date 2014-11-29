@@ -6,8 +6,8 @@ public class WallpostModel {
 
     public int id;
     public String message;
-    public int fromId;
-    public int toId;
+    public String fromUsername;
+    public String toUsername;
     public Date datetime;
 
     public int getId() {
@@ -22,24 +22,24 @@ public class WallpostModel {
         return message;
     }
 
+    public String getFromUsername() {
+        return fromUsername;
+    }
+
+    public void setFromUsername(String fromUsername) {
+        this.fromUsername = fromUsername;
+    }
+
+    public String getToUsername() {
+        return toUsername;
+    }
+
+    public void setToUsername(String toUsername) {
+        this.toUsername = toUsername;
+    }
+
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public int getFromId() {
-        return fromId;
-    }
-
-    public void setFromId(int fromId) {
-        this.fromId = fromId;
-    }
-
-    public int getToId() {
-        return toId;
-    }
-
-    public void setToId(int toId) {
-        this.toId = toId;
     }
 
     public Date getDatetime() {

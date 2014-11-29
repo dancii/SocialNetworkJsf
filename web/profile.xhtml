@@ -27,8 +27,8 @@
             <div id="content" class="left_content">
                 <h:form>
                     <h:inputTextarea id="txtAreaWallPost" value="#{wallpostBean.message}" />
-                    <input type="hidden" name="fromId" value="#{userBean.userModel.id}" />
-                    <input type="hidden" name="toId" value="#{userBean.userProfile.id}" />
+                    <input type="hidden" name="fromId" value="#{userBean.userModel.username}" />
+                    <input type="hidden" name="toId" value="#{userBean.userProfile.username}" />
                     <h:commandButton id="cmdBtbWallPost" value="Post" action="#{wallpostBean.postOnWall()}" />
                 </h:form>
                 
@@ -36,7 +36,7 @@
                     
                     <p:dataTable var="wallPost" value="#{userBean.allWallpostToUser}">
                         <p:column headerText="From">
-                            <h:outputText value="#{wallPost.id}" />
+                            <h:outputText value="#{wallPost.fromUsername}" />
                         </p:column>
                         <p:column headerText="Message">
                             <h:outputText value="#{wallPost.message}" />

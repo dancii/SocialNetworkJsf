@@ -20,8 +20,8 @@ import javax.faces.context.FacesContext;
 public class WallpostBean {
 
     private String message;
-    private int fromId;
-    private int toId;
+    private String fromUsername;
+    private String toUsername;
     private Date date;
     private List<WallpostModel> wallpostModelList;
     
@@ -36,20 +36,20 @@ public class WallpostBean {
         this.message = message;
     }
 
-    public int getFromId() {
-        return fromId;
+    public String getFromUsername() {
+        return fromUsername;
     }
 
-    public void setFromId(int fromId) {
-        this.fromId = fromId;
+    public void setFromUsername(String fromUsername) {
+        this.fromUsername = fromUsername;
     }
 
-    public int getToId() {
-        return toId;
+    public String getToUsername() {
+        return toUsername;
     }
 
-    public void setToId(int toId) {
-        this.toId = toId;
+    public void setToUsername(String toUsername) {
+        this.toUsername = toUsername;
     }
 
     public Date getDate() {
@@ -76,14 +76,14 @@ public class WallpostBean {
         String sendPost = "";
         
         
-        fromId = Integer.parseInt(FacesContext.getCurrentInstance().
-		getExternalContext().getRequestParameterMap().get("fromId"));
-        toId=Integer.parseInt(FacesContext.getCurrentInstance().
-		getExternalContext().getRequestParameterMap().get("toId"));
+        fromUsername = FacesContext.getCurrentInstance().
+		getExternalContext().getRequestParameterMap().get("fromId");
+        toUsername=FacesContext.getCurrentInstance().
+		getExternalContext().getRequestParameterMap().get("toId");
         
         wallpostModel.setMessage(message);
-        wallpostModel.setFromId(fromId);
-        wallpostModel.setToId(toId);
+        wallpostModel.setFromUsername(fromUsername);
+        wallpostModel.setToUsername(toUsername);
         
         sendPost=gson.toJson(wallpostModel);
         
@@ -102,12 +102,12 @@ public class WallpostBean {
         
     }
     
-    public List<WallpostModel> getAllWallpostToUser(int fromId){
+    public List<WallpostModel> getAllWallpostToUser(String fromUsername){
         String gsonAnswer="";
         Gson gson = new Gson();
         WallpostRestClient wallPostRestClient=new WallpostRestClient();
         
-        gsonAnswer = wallPostRestClient.getAllwallPostToUser(gson.toJson(fromId));
+        gsonAnswer = wallPostRestClient.getAllwallPostToUser(gson.toJson(fromUsername));
         
         wallpostModelList = gson.fromJson(gsonAnswer, new TypeToken<List<WallpostModel>>() {}.getType());
         return wallpostModelList;
@@ -115,8 +115,8 @@ public class WallpostBean {
     
     public void clearAll(){
         message="";
-        fromId=0;
-        toId=0;       
+        fromUsername="";
+        toUsername="";       
     }
     
 }

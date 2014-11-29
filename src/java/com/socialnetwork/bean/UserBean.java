@@ -216,8 +216,9 @@ public class UserBean {
     }
     
     public List<WallpostModel> getAllWallpostToUser(){
-        return wallpostBean.getAllWallpostToUser(userProfile.getId());
+        return wallpostBean.getAllWallpostToUser(userProfile.getUsername());
     }
+    
     
     public void clearAll(){
         id=0;

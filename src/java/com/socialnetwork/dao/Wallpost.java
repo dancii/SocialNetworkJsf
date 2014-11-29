@@ -33,10 +33,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Wallpost.findAll", query = "SELECT w FROM Wallpost w"),
     @NamedQuery(name = "Wallpost.findById", query = "SELECT w FROM Wallpost w WHERE w.id = :id"),
-    @NamedQuery(name = "Wallpost.findByFromid", query = "SELECT w FROM Wallpost w WHERE w.fromid = :fromid"),
-    @NamedQuery(name = "Wallpost.findByToid", query = "SELECT w FROM Wallpost w WHERE w.toid = :toid"),
+    @NamedQuery(name = "Wallpost.findByFromUsername", query = "SELECT w FROM Wallpost w WHERE w.fromUsername = :fromUsername"),
+    @NamedQuery(name = "Wallpost.findByToUsername", query = "SELECT w FROM Wallpost w WHERE w.toUsername = :toUsername"),
     @NamedQuery(name = "Wallpost.findByDate", query = "SELECT w FROM Wallpost w WHERE w.date = :date")})
-
 public class Wallpost implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,12 +51,14 @@ public class Wallpost implements Serializable {
     private String message;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "fromid")
-    private int fromid;
+    @Size(min = 1, max = 35)
+    @Column(name = "fromUsername")
+    private String fromUsername;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "toid")
-    private int toid;
+    @Size(min = 1, max = 35)
+    @Column(name = "toUsername")
+    private String toUsername;
     @Basic(optional = false)
     @NotNull
     @Column(name = "date")
@@ -71,11 +72,11 @@ public class Wallpost implements Serializable {
         this.id = id;
     }
 
-    public Wallpost(Integer id, String message, int fromid, int toid, Date date) {
+    public Wallpost(Integer id, String message, String fromUsername, String toUsername, Date date) {
         this.id = id;
         this.message = message;
-        this.fromid = fromid;
-        this.toid = toid;
+        this.fromUsername = fromUsername;
+        this.toUsername = toUsername;
         this.date = date;
     }
 
@@ -95,20 +96,20 @@ public class Wallpost implements Serializable {
         this.message = message;
     }
 
-    public int getFromid() {
-        return fromid;
+    public String getFromUsername() {
+        return fromUsername;
     }
 
-    public void setFromid(int fromid) {
-        this.fromid = fromid;
+    public void setFromUsername(String fromUsername) {
+        this.fromUsername = fromUsername;
     }
 
-    public int getToid() {
-        return toid;
+    public String getToUsername() {
+        return toUsername;
     }
 
-    public void setToid(int toid) {
-        this.toid = toid;
+    public void setToUsername(String toUsername) {
+        this.toUsername = toUsername;
     }
 
     public Date getDate() {

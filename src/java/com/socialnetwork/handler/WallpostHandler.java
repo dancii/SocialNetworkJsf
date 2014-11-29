@@ -54,8 +54,8 @@ public class WallpostHandler {
         return gson.toJson(registerSuccess);
     }
     
-    public static String getAllWallpost(String toIdStr){
-        Integer toId=-1;
+    public static String getAllWallpost(String toUsernameStr){
+        String toUsername="";
         Gson gson = new Gson();
         List<WallpostModel> wallPostList = new ArrayList<WallpostModel>();
         List<Wallpost> wallPostDaoList = null;
@@ -63,14 +63,14 @@ public class WallpostHandler {
         EntityManagerFactory emf=null;
         EntityManager em=null;
         
-        toId=gson.fromJson(toIdStr, Integer.class);
+        toUsername=gson.fromJson(toUsernameStr, String.class);
         
         try{
             emf = Persistence.createEntityManagerFactory("SocialNetworkJsfPU");
             em = emf.createEntityManager();
             
-            Query query = em.createNamedQuery("Wallpost.findByToid");
-            query.setParameter("toid", toId);
+            Query query = em.createNamedQuery("Wallpost.findByToUsername");
+            query.setParameter("toUsername", toUsername);
             
             wallPostDaoList = query.getResultList();
             
@@ -79,8 +79,8 @@ public class WallpostHandler {
                     wallPostModel = new WallpostModel();
                     wallPostModel.setId(wallPostDaoList.get(i).getId());
                     wallPostModel.setMessage(wallPostDaoList.get(i).getMessage());
-                    wallPostModel.setToId(wallPostDaoList.get(i).getToid());
-                    wallPostModel.setFromId(wallPostDaoList.get(i).getFromid());
+                    wallPostModel.setToUsername(wallPostDaoList.get(i).getToUsername());
+                    wallPostModel.setFromUsername(wallPostDaoList.get(i).getFromUsername());
                     wallPostModel.setDatetime(wallPostDaoList.get(i).getDate());
                     wallPostList.add(wallPostModel);
                     System.out.println("CHECKING ERROR !!!!!!!!!!!! MESSAGE: "+wallPostDaoList.get(i).getMessage());
@@ -107,8 +107,8 @@ public class WallpostHandler {
         Wallpost wallPostDao = new Wallpost();
         
         wallPostDao.setMessage(wallPostModel.getMessage());
-        wallPostDao.setFromid(wallPostModel.getFromId());
-        wallPostDao.setToid(wallPostModel.getToId());
+        wallPostDao.setFromUsername(wallPostModel.getFromUsername());
+        wallPostDao.setToUsername(wallPostModel.getToUsername());
         wallPostDao.setDate(new Date());
         return wallPostDao;
     }
