@@ -149,7 +149,7 @@ public class UserBean {
         UserRestClient userClient = new UserRestClient();
         
         userModel = gson.fromJson(userClient.loginUser(username, password), UserModel.class);
-        System.out.println("CHECKIING!!!!!!!!!!!!!!!!"+userModel.getFirstname());
+        
         if(userModel!=null){
             clearAll();
             return "welcome";

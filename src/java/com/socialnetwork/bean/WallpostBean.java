@@ -62,6 +62,7 @@ public class WallpostBean {
         WallpostModel wallpostModel = new WallpostModel();
         Gson gson = new Gson();
         String checkIfPostSuccess="false";
+        String sendPost = "";
         
         
         fromId = Integer.parseInt(FacesContext.getCurrentInstance().
@@ -73,19 +74,27 @@ public class WallpostBean {
         wallpostModel.setFromId(fromId);
         wallpostModel.setToId(toId);
         
+        sendPost=gson.toJson(wallpostModel);
+        
         try {
-            checkIfPostSuccess=gson.fromJson(wallPostRestClient.sendPost(URLEncoder.encode(gson.toJson(wallpostModel),"UTF-8")), String.class);
+            checkIfPostSuccess=gson.fromJson(wallPostRestClient.sendPost(URLEncoder.encode(sendPost,"UTF-8")), String.class);
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(WallpostBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        clearAll();
         if(checkIfPostSuccess.equalsIgnoreCase("true")){
             return "profile";
         }else{
             return "welcome";
         }
         
-        //System.out.println("TESYSYSYSYFUOAJDFPAJSPDOJASPOJD:     Message: "+message+" fromID: "+fromId+" toId: "+toId);
+    }
+    
+    public void clearAll(){
+        message="";
+        fromId=0;
+        toId=0;       
     }
     
 }

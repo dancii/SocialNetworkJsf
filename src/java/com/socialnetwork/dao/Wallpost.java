@@ -123,50 +123,6 @@ public class Wallpost implements Serializable {
     public void setDate(Date date) {
         this.date = date;
     }
-    
-    public String postOnWall(WallpostModel wallPostModel){
-        String registerSuccess = "false";
-        Wallpost wallPost = null;
-        EntityTransaction trans = null;
-        EntityManagerFactory emf=null;
-        EntityManager em=null;
-        
-        try{
-            emf = Persistence.createEntityManagerFactory("SocialNetworkJsfPU");
-            em = emf.createEntityManager();
-
-            wallPost=returnPost(wallPostModel);
-            trans=em.getTransaction();
-            trans.begin();
-            em.persist(wallPost);
-
-            em.flush();
-            trans.commit();
-            registerSuccess="true";
-        }catch(Exception e){
-            if(trans!=null){
-                trans.rollback();
-            }
-        }finally{
-            if(em!=null){
-                em.close();
-            }
-            if(emf!=null){
-                emf.close();
-            }
-        }
-        return registerSuccess;
-    }
-    
-    public Wallpost returnPost(WallpostModel wallPostModel){
-        Wallpost wallPostDao = new Wallpost();
-        
-        wallPostDao.setMessage(wallPostModel.getMessage());
-        wallPostDao.setFromid(wallPostModel.getFromId());
-        wallPostDao.setToid(wallPostModel.getToId());
-        wallPostDao.setDate(new Date());
-        return wallPostDao;
-    }
 
     @Override
     public int hashCode() {

@@ -31,6 +31,8 @@ import javax.persistence.Query;
     @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
     @NamedQuery(name = "User.findByFirstname", query = "SELECT u FROM User u WHERE u.firstname = :firstname"),
     @NamedQuery(name = "User.findByLastname", query = "SELECT u FROM User u WHERE u.lastname = :lastname"),
+    @NamedQuery(name = "User.logIn", query = "SELECT u FROM User u WHERE u.username = :username AND u.password = :password"),
+    @NamedQuery(name = "User.searchByUsernameLike", query = "SELECT u FROM User u WHERE u.username like :username"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")})
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -117,134 +119,6 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-    
-    public String registerUser(UserModel user){
-        String registerSuccess = "false";
-        User userDao=null;
-        EntityTransaction trans = null;
-        EntityManagerFactory emf=null;
-        EntityManager em=null;
-        
-        try{
-            emf = Persistence.createEntityManagerFactory("SocialNetworkJsfPU");
-            em = emf.createEntityManager();
-
-            userDao=returnUser(user);
-            trans=em.getTransaction();
-            trans.begin();
-            em.persist(userDao);
-
-            em.flush();
-            trans.commit();
-            registerSuccess="true";
-        }catch(Exception e){
-            if(trans!=null){
-                trans.rollback();
-            }
-        }finally{
-            if(em!=null){
-                em.close();
-            }
-            if(emf!=null){
-                emf.close();
-            }
-        }
-
-        return registerSuccess;
-    }
-    
-    public UserModel loginUser(UserModel user){
-        User userDao=null;
-        UserModel userModel=null;
-        EntityManagerFactory emf=null;
-        EntityManager em=null;
-        
-        try{
-            emf = Persistence.createEntityManagerFactory("SocialNetworkJsfPU");
-            em = emf.createEntityManager();
-
-            Query query = em.createQuery("SELECT u FROM User u WHERE u.username = :username AND u.password = :password");
-            query.setParameter("username",user.getUsername());
-            query.setParameter("password",user.getPassword());
-            userDao = (User) query.getSingleResult();
-            
-            if(userDao!=null){
-                userModel = new UserModel();
-                userModel.setId(userDao.getId());
-                userModel.setUsername(userDao.getUsername());
-                userModel.setFirstname(userDao.getFirstname());
-                userModel.setLastname(userDao.getLastname());
-                userModel.setEmail(userDao.getEmail());
-            }
-            
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally{
-            if(em!=null){
-                em.close();
-            }
-            if(emf!=null){
-                emf.close();
-            }
-        }
-        return userModel;
-    }
-    
-    public List<UserModel> searchUserByUsername(String username){
-        List<User> userDao=null;
-        List<UserModel> userList=new ArrayList<UserModel>();
-        UserModel userModel=null;
-        EntityManagerFactory emf=null;
-        EntityManager em=null;
-        
-        
-        try{
-            emf = Persistence.createEntityManagerFactory("SocialNetworkJsfPU");
-            em = emf.createEntityManager();
-
-            Query query = em.createQuery("SELECT u FROM User u WHERE u.username like :username");
-            query.setParameter("username","%"+username+"%");
-            userDao = query.getResultList();
-            
-            if(userDao!=null){
-                for(int i=0;i<userDao.size();i++){
-                    userModel = new UserModel();
-                    userModel.setId(userDao.get(i).getId());
-                    userModel.setUsername(userDao.get(i).getUsername());
-                    userModel.setFirstname(userDao.get(i).getFirstname());
-                    userModel.setLastname(userDao.get(i).getLastname());
-                    userModel.setEmail(userDao.get(i).getLastname());
-                    userList.add(userModel);
-                }
-            } else {
-                userModel = new UserModel();
-                userModel.setUsername("");
-                userList.add(userModel);
-            }
-            
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally{
-            if(em!=null){
-                em.close();
-            }
-            if(emf!=null){
-                emf.close();
-            }
-        }
-        return userList;
-    }
-    
-    public User returnUser(UserModel user){
-        User userDao = new User();
-        userDao.id=user.getId();
-        userDao.username=user.getUsername();
-        userDao.password=user.getPassword();
-        userDao.firstname=user.getFirstname();
-        userDao.lastname=user.getLastname();
-        userDao.email=user.getEmail();
-        return userDao;
     }
 
     @Override
