@@ -17,12 +17,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 
 @ManagedBean
-@SessionScoped
+@RequestScoped
 public class MessageBean {
     
     private int id;
@@ -111,12 +115,14 @@ public class MessageBean {
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(MessageBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        userBean.clearAll();
+        clearAll();
         if(sendMessageSuccess.equalsIgnoreCase("true")){
             return "message";
         }else{
             return "welcome";
         }
+        
        
     }
     
@@ -127,27 +133,47 @@ public class MessageBean {
         String toJson ="";
         toJson = gson.toJson(userBean.getUserModel().getUsername());
         
-        System.out.println("ERROR 1 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+userBean.getUserModel().getUsername());
-        messageModelList = gson.fromJson(messageClient.getAllMessages(toJson), new TypeToken<List<MessageModel>>() {}.getType());
-        System.out.println("ERROR 2 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         
+        messageModelList = gson.fromJson(messageClient.getAllMessages(toJson), new TypeToken<List<MessageModel>>() {}.getType());
+        
+        clearAll();
         
         return messageModelList;
     }
     
-    public void readAMessage(){
-        Gson gson = new Gson();
-        MessageRestClient messageClient = new MessageRestClient();
-        MessageModel messageModel = new MessageModel(this.id, true);
-        String succeed ="";
+    public void readAMessage(int msgId, String msg, boolean isRead){
         
-        succeed=gson.fromJson(messageClient.readAMessage(gson.toJson(messageModel)), String.class);
-        
-        if(succeed.equalsIgnoreCase("true")){
-            System.out.println("Read a message trueee!!!!!!!!!!!!!!!");
+        if(isRead){
+            FacesMessage messageDialog = new FacesMessage(FacesMessage.SEVERITY_INFO, "Message", msg);
+            RequestContext.getCurrentInstance().showMessageInDialog(messageDialog);
         }else{
-            System.out.println("Read a message falseeeeeee!!!!!!!!!!!!!!!");
+            Gson gson = new Gson();
+            MessageRestClient messageClient = new MessageRestClient();
+            String succeed ="";
+
+            try {
+                succeed=gson.fromJson(messageClient.readAMessage(URLEncoder.encode(gson.toJson(msgId), "UTF-8")), String.class);
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(MessageBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            if(succeed.equalsIgnoreCase("true")){
+                System.out.println("Read a message trueee!!!!!!!!!!!!!!!");
+            }else{
+                System.out.println("Read a message falseeeeeee!!!!!!!!!!!!!!!");
+            }
+            clearAll();
         }
+        
+    }
+    
+    private void clearAll(){
+        this.id=0;
+        this.message="";
+        this.fromUsername="";
+        this.toUsername="";
+        this.isRead=false;
+        this.datetime=null;
     }
     
 }

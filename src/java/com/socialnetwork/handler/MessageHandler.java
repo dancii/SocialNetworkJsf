@@ -114,23 +114,23 @@ public class MessageHandler {
         EntityManager em = null;
         EntityManagerFactory emf = null;
         EntityTransaction trans = null;
-        Message messageDao = new Message();
-        MessageModel messageModel = new MessageModel();
         String readAMessage = "false";
         
-        messageModel=gson.fromJson(messageObj, MessageModel.class);
+        int messageId=gson.fromJson(messageObj, Integer.class);
+        
         
         try{
             emf = Persistence.createEntityManagerFactory("SocialNetworkJsfPU");
             em = emf.createEntityManager();
-
-            messageDao=returnMessage(messageModel);
+            
             trans=em.getTransaction();
             trans.begin();
-            em.refresh(messageDao);
-
+            Message messageUpdate = em.find(Message.class, messageId);
+            messageUpdate.setIsRead(true);
+            
             em.flush();
             trans.commit();
+            
             readAMessage="true";
         }catch(Exception e){
             if(trans!=null){

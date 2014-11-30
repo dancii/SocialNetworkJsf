@@ -35,20 +35,13 @@
                 </h:form>
                 
                 <h:form>
-                    
                     <p:dataTable var="message" value="#{messageBean.allMessages}">
                         <p:column headerText="From">
                             <h:outputText value="#{message.fromUsername}" />
                         </p:column>
                         <p:column headerText="Message">
-                            <p:commandButton value="Read message" actionListener="#{messageBean.readAMessage()}">
-                                <p:confirm header="Message" message="#{message.message}" icon="ui-icon-alert" />
-                            </p:commandButton>
-                            <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
-                                <p:commandButton value="Ok" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                            </p:confirmDialog>
+                            <p:commandButton id="cmdbtnMessageId" value="Read message" icon="ui-icon-script" actionListener="#{messageBean.readAMessage(message.id,message.message,message.isRead)}" />
                         </p:column>
-                        
                     </p:dataTable>
                     
                 </h:form>
