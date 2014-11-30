@@ -11,6 +11,13 @@ public class MessageModel {
     private Boolean isRead;
     private Date datetime;
 
+    public MessageModel(){}
+    
+    public MessageModel(int id, Boolean isRead){
+        this.id=id;
+        this.isRead=isRead;
+    }
+    
     public MessageModel(String message, String fromUsername, String toUsername){
         this.message=message;
         this.fromUsername=fromUsername;
@@ -25,8 +32,6 @@ public class MessageModel {
         this.isRead=isRead;
         this.datetime=datetime;
     }
-    
-    public MessageModel(){}
     
     public int getId() {
         return id;

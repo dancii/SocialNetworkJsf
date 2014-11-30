@@ -47,6 +47,10 @@ public class MessageRestClient {
         return webTarget.path(java.text.MessageFormat.format("sendMessage/{0}", new Object[]{messageObj})).request().post(null, String.class);
     }
 
+    public String readAMessage(String messageObj) throws ClientErrorException {
+        return webTarget.path(java.text.MessageFormat.format("readAMessage/{0}", new Object[]{messageObj})).request().post(null, String.class);
+    }
+
     public String getJson() throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);

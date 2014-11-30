@@ -6,11 +6,15 @@
 package com.socialnetwork.bean;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.socialnetwork.client.MessageRestClient;
 import com.socialnetwork.model.MessageModel;
+import com.socialnetwork.model.UserModel;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
@@ -27,6 +31,7 @@ public class MessageBean {
     private String toUsername;
     private Boolean isRead;
     private Date datetime;
+    private ArrayList<MessageModel> messageModelList;
     @ManagedProperty(value="#{userBean}")
     private UserBean userBean;
 
@@ -115,8 +120,34 @@ public class MessageBean {
        
     }
     
+    public List<MessageModel> getAllMessages(){
+        Gson gson = new Gson();
+        MessageRestClient messageClient = new MessageRestClient();
+        messageModelList = new ArrayList<MessageModel>();
+        String toJson ="";
+        toJson = gson.toJson(userBean.getUserModel().getUsername());
+        
+        System.out.println("ERROR 1 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+userBean.getUserModel().getUsername());
+        messageModelList = gson.fromJson(messageClient.getAllMessages(toJson), new TypeToken<List<MessageModel>>() {}.getType());
+        System.out.println("ERROR 2 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        
+        
+        return messageModelList;
+    }
     
-    
-    
+    public void readAMessage(){
+        Gson gson = new Gson();
+        MessageRestClient messageClient = new MessageRestClient();
+        MessageModel messageModel = new MessageModel(this.id, true);
+        String succeed ="";
+        
+        succeed=gson.fromJson(messageClient.readAMessage(gson.toJson(messageModel)), String.class);
+        
+        if(succeed.equalsIgnoreCase("true")){
+            System.out.println("Read a message trueee!!!!!!!!!!!!!!!");
+        }else{
+            System.out.println("Read a message falseeeeeee!!!!!!!!!!!!!!!");
+        }
+    }
     
 }

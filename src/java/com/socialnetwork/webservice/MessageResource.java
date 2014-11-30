@@ -65,6 +65,13 @@ public class MessageResource {
         return MessageHandler.sendMessage(messageObj);
     }
     
+    @POST
+    @Path("readAMessage/{messageObj}")
+    @Produces("application/json")
+    public String readAMessage(@PathParam("messageObj")String messageObj){
+        return MessageHandler.readAMessage(messageObj);
+    }
+    
     /**
      * PUT method for updating or creating an instance of MessageResource
      * @param content representation for the resource
