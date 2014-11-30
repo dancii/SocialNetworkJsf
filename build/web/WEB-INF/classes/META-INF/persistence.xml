@@ -4,6 +4,7 @@
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <class>com.socialnetwork.dao.User</class>
     <class>com.socialnetwork.dao.Wallpost</class>
+    <class>com.socialnetwork.dao.Message</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://130.237.84.72:3306/socialnetwork?zeroDateTimeBehavior=convertToNull"/>

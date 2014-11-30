@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+        <title>Profile - Social network</title>
+    </h:head>
+
+    <h:body>
+        
+        <div id="top" class="top">
+            <h1>Social network</h1>
+            
+        </div>
+        <div>
+            <div id="left">
+                <h3>Name: #{userBean.userModel.firstname} #{userBean.userModel.lastname}</h3>
+                <h3>Email: #{userBean.userModel.email}</h3>
+                
+            </div>
+            <div id="content" class="left_content">
+                <h:form>
+                    <p:outputLabel value="Search:" for="autocomplete" />
+                    <p:autoComplete id="autocomplete" value="#{userBean.username}" completeMethod="#{userBean.searchUserByUsername}" >
+                    </p:autoComplete>
+                    
+                    <h:inputTextarea id="txtAreaWallPost" value="#{messageBean.message}" />
+                    <h:commandButton id="cmdBtbWallPost" value="Post" action="#{messageBean.sendMessage()}" />
+                </h:form>
+                
+                <h:form>
+                    
+                    <p:dataTable var="wallPost" value="">
+                        <p:column headerText="From">
+                            <h:outputText value="" />
+                        </p:column>
+                        <p:column headerText="Message">
+                            <h:outputText value="" />
+                        </p:column>
+                        
+                    </p:dataTable>
+                    
+                </h:form>
+                
+            </div>
+        </div>
+    </h:body>
+
+</html>
+
+
